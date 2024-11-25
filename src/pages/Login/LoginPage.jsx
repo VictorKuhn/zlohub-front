@@ -55,7 +55,7 @@ const LoginPage = () => {
           // Faz a consulta dos dados do responsável usando o e-mail
           try {
             const responsibleResponse = await axios.get(
-              `http://localhost:8080/api/responsible/commonuser/findByEmail/${decoded.sub}`, // sub contém o e-mail do usuário
+              `http://localhost:8080/api/responsible/commonuser/findByEmail/${decoded.sub}`,
               {
                 headers: {
                   Authorization: `Bearer ${token}`, // Adiciona o token no cabeçalho da requisição
@@ -63,7 +63,7 @@ const LoginPage = () => {
               }
             );
 
-            const responsibleData = responsibleResponse.data.contentResponse; // Pega os dados reais
+            const responsibleData = responsibleResponse.data.contentResponse;
             console.log("Dados do Responsável:", responsibleData);
 
             // Armazene os dados no localStorage
@@ -81,7 +81,34 @@ const LoginPage = () => {
             );
           }
         } else if (decoded.roles === "ROLE_CUIDADOR") {
-          navigate("/cuidador");
+          try {
+            // Faz a consulta dos dados do cuidador usando o e-mail
+            const cuidadorResponse = await axios.post(
+              "http://localhost:8030/api/cuidadores/buscar-por-email",
+              {
+                email: decoded.sub, // Usa o email extraído do token JWT
+              },
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`, // Adiciona o token no cabeçalho da requisição
+                },
+              }
+            );
+
+            const cuidadorData = cuidadorResponse.data;
+            console.log("Dados do Cuidador:", cuidadorData);
+
+            // Armazena os dados no localStorage
+            localStorage.setItem("cuidadorData", JSON.stringify(cuidadorData));
+
+            // Redireciona para a página do cuidador
+            navigate("/cuidador");
+          } catch (error) {
+            console.error("Erro ao buscar dados do cuidador:", error);
+            toast.error(
+              "Erro ao buscar dados do cuidador. Tente novamente mais tarde."
+            );
+          }
         } else if (decoded.roles === "ROLE_ADMIN") {
           navigate("/admin");
         } else {
