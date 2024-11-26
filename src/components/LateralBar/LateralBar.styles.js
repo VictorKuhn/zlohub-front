@@ -86,7 +86,6 @@ export const DropdownMenu = styled.div`
   overflow: hidden;
   z-index: 1500;
 
-  /* Definindo os estados inicial (fechado) e final (aberto) */
   max-height: ${(props) => (props.$isOpen ? "100vh" : "0")};
   opacity: ${(props) => (props.$isOpen ? "1" : "0")};
   transform: ${(props) => (props.$isOpen ? "translateY(0)" : "translateY(-20px)")};

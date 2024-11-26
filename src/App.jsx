@@ -11,6 +11,9 @@ import CandidaturasCuidador from "./components/CandidaturasCuidador/Candidaturas
 import ResetPasswordPage from "./pages/ResetPasswordPage/ResetPasswordPage";
 import VagasCuidador from "./components/VagasCuidador/VagasCuidador";
 import PerfilCuidador from "./pages/PerfilCuidador/PerfilCuidador";
+import PainelCuidadores from "./pages/PainelCuidadores/PainelCuidadores";
+import PerfilResponsavel from "./pages/PerfilResponsavel/PerfilResponsavel";
+import MinhasVagasResponsavel from "./pages/MinhasVagasResponsavel/MinhasVagasResponsavel";
 
 function App() {
   return (
@@ -27,6 +30,9 @@ function App() {
         <Route path="/vagasCuidador" element={<VagasCuidador />} />
         <Route path="/candidaturasCuidador" element={<CandidaturasCuidador />} />
         <Route path="/perfilCuidador" element={<PerfilCuidador />} />
+        <Route path="/painelCuidadores" element={<PainelCuidadores />} />
+        <Route path="/perfilResponsavel" element={<PerfilResponsavel />} />
+        <Route path="/minhasVagas" element={<MinhasVagasResponsavel />} />
       </Routes>
     </>
   );
