@@ -57,7 +57,7 @@ export const RoleOption = styled.div`
 export const Form = styled.form`
   display: flex;
   flex-direction: column;
-  width: 300px;
+  width: 350px;
   padding: 2rem;
   border-radius: 8px;
   background-color: white;
@@ -92,7 +92,7 @@ export const PasswordContainer = styled.div`
 
 export const PasswordToggleIcon = styled.span`
   position: absolute;
-  right: -5px;
+  right: 5px;
   top: 5px;
   cursor: pointer;
   font-size: 1rem;

@@ -46,7 +46,7 @@ export const Subtitle = styled.p`
 export const Form = styled.form`
     display: flex;
     flex-direction: column;
-    width: 300px;
+    width: 350px;
     padding: 2rem;
     border-radius: 8px;
     background-color: white;
