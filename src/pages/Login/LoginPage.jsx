@@ -55,21 +55,16 @@ const LoginPage = () => {
           // Faz a consulta dos dados do responsável usando o e-mail
           try {
             const responsibleResponse = await axios.get(
-              `http://localhost:8080/api/responsible/commonuser/findByEmail/${decoded.sub}`,
-              {
-                headers: {
-                  Authorization: `Bearer ${token}`, // Adiciona o token no cabeçalho da requisição
-                },
-              }
+              `http://localhost:8080/api/responsible/findByEmail/${decoded.sub}`
             );
 
-            const responsibleData = responsibleResponse.data.contentResponse;
-            console.log("Dados do Responsável:", responsibleData);
+            const responsavelData = responsibleResponse.data.contentResponse;
+            console.log("Dados do Responsável:", responsavelData);
 
             // Armazene os dados no localStorage
             localStorage.setItem(
-              "responsibleData",
-              JSON.stringify(responsibleData)
+              "responsavelData",
+              JSON.stringify(responsavelData)
             );
 
             // Redireciona para a página do responsável

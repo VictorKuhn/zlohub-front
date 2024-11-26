@@ -14,11 +14,10 @@ import {
   Button,
   Title,
   Section,
-  CheckboxContainer,
-} from "./PerfilCuidador.styles";
+} from "./PerfilResponsavel.styles";
 
-const PerfilCuidador = () => {
-  const [cuidadorData, setCuidadorData] = useState({});
+const PerfilResponsavel = () => {
+  const [, setResponsavelData] = useState({});
   const [formData, setFormData] = useState({});
   const [cep, setCep] = useState("");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -36,9 +35,9 @@ const PerfilCuidador = () => {
       const decoded = jwtDecode(token);
       const isTokenValid = decoded.exp * 1000 > Date.now();
 
-      if (!isTokenValid || decoded.roles !== "ROLE_CUIDADOR") {
+      if (!isTokenValid || decoded.roles !== "ROLE_RESPONSÁVEL") {
         localStorage.removeItem("token");
-        localStorage.removeItem("cuidadorData");
+        localStorage.removeItem("responsavelData");
         navigate("/login");
       }
     } catch (error) {
@@ -46,11 +45,11 @@ const PerfilCuidador = () => {
       navigate("/login");
     }
 
-    const storedData = JSON.parse(localStorage.getItem("cuidadorData"));
+    const storedData = JSON.parse(localStorage.getItem("responsavelData"));
     if (storedData) {
-      setCuidadorData(storedData);
+      setResponsavelData(storedData);
       setFormData(storedData);
-      setCep(storedData.cep || "");
+      setCep(storedData.cepRes || "");
     }
   }, [navigate]);
 
@@ -100,12 +99,17 @@ const PerfilCuidador = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const updatedData = {
+      ...formData,
+      planoAssinado: 1, // Sempre será 1
+    };
+
     try {
       await axios.put(
-        `http://localhost:8030/api/cuidadores/${cuidadorData.id}`,
-        formData
+        "http://localhost:8080/api/responsible/commonuser/update",
+        updatedData
       );
-      localStorage.setItem("cuidadorData", JSON.stringify(formData));
+      localStorage.setItem("responsavelData", JSON.stringify(updatedData));
       toast.success("Dados atualizados com sucesso!");
     } catch (error) {
       console.error("Erro ao atualizar dados:", error);
@@ -125,29 +129,34 @@ const PerfilCuidador = () => {
             <Label>Nome</Label>
             <Input
               type="text"
-              name="nome"
-              value={formData.nome || ""}
+              name="nomeRes"
+              value={formData.nomeRes || ""}
               onChange={handleInputChange}
             />
           </InputContainer>
           <InputContainer>
-            <Label>Sobrenome</Label>
-            <Input
-              type="text"
-              name="sobrenome"
-              value={formData.sobrenome || ""}
-              onChange={handleInputChange}
-            />
+            <Label>CPF</Label>
+            <Input type="text" value={formData.cpfRes || ""} disabled />
           </InputContainer>
         </Section>
         <Section>
           <InputContainer>
-            <Label>CPF</Label>
-            <Input type="text" value={formData.cpf || ""} disabled />
+            <Label>Idade</Label>
+            <Input
+              type="number"
+              name="idadeRes"
+              value={formData.idadeRes || ""}
+              onChange={handleInputChange}
+            />
           </InputContainer>
           <InputContainer>
-            <Label>Data de Nascimento</Label>
-            <Input type="date" value={formData.dataNascimento || ""} disabled />
+            <Label>RG</Label>
+            <Input
+              type="text"
+              name="rgRes"
+              value={formData.rgRes || ""}
+              onChange={handleInputChange}
+            />
           </InputContainer>
         </Section>
         <Section>
@@ -155,8 +164,8 @@ const PerfilCuidador = () => {
             <Label>CEP</Label>
             <Input
               type="text"
-              name="cep"
-              value={cep || formData.cep || ""}
+              name="cepRes"
+              value={cep || formData.cepRes || ""}
               onChange={handleCepChange}
             />
           </InputContainer>
@@ -221,20 +230,29 @@ const PerfilCuidador = () => {
         </Section>
         <Section>
           <InputContainer>
-            <Label>Telefone de Contato 1</Label>
+            <Label>Contato 1</Label>
             <Input
               type="text"
-              name="telefoneContato1"
-              value={formData.telefoneContato1 || ""}
+              name="contato1Res"
+              value={formData.contato1Res || ""}
               onChange={handleInputChange}
             />
           </InputContainer>
           <InputContainer>
-            <Label>Telefone de Contato 2</Label>
+            <Label>Contato 2</Label>
             <Input
               type="text"
-              name="telefoneContato2"
-              value={formData.telefoneContato2 || ""}
+              name="contato2Res"
+              value={formData.contato2Res || ""}
+              onChange={handleInputChange}
+            />
+          </InputContainer>
+          <InputContainer>
+            <Label>Contato 3</Label>
+            <Input
+              type="text"
+              name="contato3Res"
+              value={formData.contato3Res || ""}
               onChange={handleInputChange}
             />
           </InputContainer>
@@ -244,121 +262,17 @@ const PerfilCuidador = () => {
             <Label>E-mail</Label>
             <Input
               type="email"
-              name="emailContato"
-              value={formData.emailContato || ""}
+              name="emailRes"
+              value={formData.emailRes || ""}
               onChange={handleInputChange}
             />
           </InputContainer>
         </Section>
-        <Section>
-          <InputContainer>
-            <Label>Tempo de Experiência</Label>
-            <Input
-              type="number"
-              name="tempoExperiencia"
-              value={formData.tempoExperiencia || ""}
-              onChange={handleInputChange}
-            />
-          </InputContainer>
-          <InputContainer>
-            <Label>Formação</Label>
-            <Input
-              type="text"
-              name="formacao"
-              value={formData.formacao || ""}
-              onChange={handleInputChange}
-            />
-          </InputContainer>
-          <InputContainer>
-            <Label>Habilidades</Label>
-            <Input
-              type="text"
-              name="habilidades"
-              value={formData.habilidades || ""}
-              onChange={handleInputChange}
-            />
-          </InputContainer>
-        </Section>
-        <Section>
-          <InputContainer>
-            <Label>Referência 1</Label>
-            <Input
-              type="text"
-              name="referencia1"
-              value={formData.referencia1 || ""}
-              onChange={handleInputChange}
-            />
-          </InputContainer>
-          <InputContainer>
-            <Label>Telefone da Referência 1</Label>
-            <Input
-              type="text"
-              name="telefoneReferencia1"
-              value={formData.telefoneReferencia1 || ""}
-              onChange={handleInputChange}
-            />
-          </InputContainer>
-        </Section>
-        <Section>
-          <InputContainer>
-            <Label>Referência 2</Label>
-            <Input
-              type="text"
-              name="referencia2"
-              value={formData.referencia2 || ""}
-              onChange={handleInputChange}
-            />
-          </InputContainer>
-          <InputContainer>
-            <Label>Telefone da Referência 2</Label>
-            <Input
-              type="text"
-              name="telefoneReferencia2"
-              value={formData.telefoneReferencia2 || ""}
-              onChange={handleInputChange}
-            />
-          </InputContainer>
-        </Section>
-        <Section>
-          <InputContainer>
-            <Label>Referência 3</Label>
-            <Input
-              type="text"
-              name="referencia3"
-              value={formData.referencia3 || ""}
-              onChange={handleInputChange}
-            />
-          </InputContainer>
-          <InputContainer>
-            <Label>Telefone da Referência 3</Label>
-            <Input
-              type="text"
-              name="telefoneReferencia3"
-              value={formData.telefoneReferencia3 || ""}
-              onChange={handleInputChange}
-            />
-          </InputContainer>
-        </Section>
-        <CheckboxContainer>
-          <label>
-            <input
-              type="checkbox"
-              checked={formData.politicaAceita || false}
-              onChange={(e) =>
-                setFormData((prev) => ({
-                  ...prev,
-                  politicaAceita: e.target.checked,
-                }))
-              }
-            />
-            Aceito as políticas da plataforma
-          </label>
-        </CheckboxContainer>
         <p>Caso deseje alterar sua senha, retorne a tela de Login e clique em "Esqueci a senha".</p>
-        <Button type="submit">Alterar dados</Button>
+        <Button type="submit">Atualizar Dados</Button>
       </Form>
     </Container>
   );
 };
 
-export default PerfilCuidador;
+export default PerfilResponsavel;
