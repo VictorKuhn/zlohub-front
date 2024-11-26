@@ -70,20 +70,19 @@ const RegisterPage = () => {
 
   const navigate = useNavigate();
 
-  // Validações em tempo real
   const validateEmail = (email) => {
     const regex = /^[^\s@]+@[^\s@]+\.(com|com\.br)$/;
     return regex.test(email);
   };
 
   const validateCpf = (cpf) => {
-    const cleanedCpf = cpf.replace(/\D/g, ""); // Remove caracteres não numéricos
-    return cleanedCpf.length === 11; // Verifica se o CPF tem 11 números
+    const cleanedCpf = cpf.replace(/\D/g, "");
+    return cleanedCpf.length === 11;
   };
 
   const validatePhone = (phone) => {
-    const cleanedPhone = phone.replace(/\D/g, ""); // Remove caracteres não numéricos
-    return cleanedPhone.length === 10 || cleanedPhone.length === 11; // Verifica se tem 10 ou 11 números
+    const cleanedPhone = phone.replace(/\D/g, "");
+    return cleanedPhone.length === 10 || cleanedPhone.length === 11;
   };
 
   // Validação da senha
@@ -105,31 +104,28 @@ const RegisterPage = () => {
   // Aplica a máscara no CEP: XXXXX-XXX
   const applyCepMask = (value) => {
     return value
-      .replace(/\D/g, "") // Remove caracteres não numéricos
-      .replace(/^(\d{5})(\d{1,3})$/, "$1-$2") // Aplica a máscara
-      .slice(0, 9); // Limita o tamanho a 9 caracteres com máscara
+      .replace(/\D/g, "")
+      .replace(/^(\d{5})(\d{1,3})$/, "$1-$2")
+      .slice(0, 9);
   };
 
   // Valida o CEP (8 dígitos, sem considerar o hífen)
   const validateCep = (value) => {
-    const numericValue = value.replace(/\D/g, ""); // Remove o hífen para validação
-    return numericValue.length === 8; // Deve ter exatamente 8 dígitos
+    const numericValue = value.replace(/\D/g, "");
+    return numericValue.length === 8;
   };
 
   const fetchAddress = async (cep) => {
-    const cleanedCep = cep.replace(/\D/g, ""); // Remove caracteres não numéricos
-
     try {
-      const response = await fetch(
-        `https://viacep.com.br/ws/${cleanedCep}/json/`
-      );
+      const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
       const data = await response.json();
-
+  
       if (data.erro) {
-        throw new Error("CEP não encontrado.");
+        setErrors((prev) => ({ ...prev, cepRes: "CEP não encontrado." }));
+        return;
       }
-
-      // Preenche os campos relacionados ao endereço
+  
+      // Atualiza apenas os campos relacionados ao endereço
       setFormData((prev) => ({
         ...prev,
         logradouro: data.logradouro || "",
@@ -137,16 +133,15 @@ const RegisterPage = () => {
         cidade: data.localidade || "",
         estado: data.uf || "",
       }));
-
-      setErrors((prev) => ({
-        ...prev,
-        cepRes: "",
-      }));
+  
+      // Remove qualquer erro do CEP
+      setErrors((prev) => ({ ...prev, cepRes: "" }));
     } catch (error) {
-      console.error("Erro ao buscar endereço:", error);
-      setErrors((prev) => ({ ...prev, cepRes: "CEP não encontrado." }));
+      console.error("Erro ao buscar o CEP:", error);
+      setErrors((prev) => ({ ...prev, cepRes: "Erro ao buscar o CEP." }));
     }
   };
+  
 
   // Verificação da confirmação da senha
   const validateConfirmPassword = (password, confirmPassword) => {
@@ -156,39 +151,6 @@ const RegisterPage = () => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-
-    const fetchAddress = async (cep) => {
-      const cleanedCep = cep.replace(/\D/g, ""); // Remove caracteres não numéricos
-
-      if (cleanedCep.length !== 8) {
-        setErrors({ ...errors, cep: "CEP inválido." });
-        return;
-      }
-
-      try {
-        const response = await fetch(
-          `https://viacep.com.br/ws/${cleanedCep}/json/`
-        );
-        const data = await response.json();
-
-        if (data.erro) {
-          setErrors({ ...errors, cep: "CEP não encontrado." });
-          return;
-        }
-
-        // Preencher os campos automaticamente
-        setFormData({
-          ...formData,
-          logradouro: data.logradouro,
-          bairro: data.bairro,
-          cidade: data.localidade,
-          estado: data.uf,
-        });
-        setErrors({ ...errors, cep: "" }); // Remove erro, se havia
-      } catch (error) {
-        setErrors({ ...errors, cep: "Erro ao buscar o CEP." });
-      }
-    };
 
     // Validações específicas
     if (name === "email") {
@@ -209,17 +171,18 @@ const RegisterPage = () => {
         cpf: !validateCpf(formattedCpf) ? "CPF inválido." : "",
       });
     }
-    if (name === "cep") {
-      const formattedCep = value
-        .replace(/\D/g, "")
-        .replace(/(\d{5})(\d{1,3})$/, "$1-$2");
-      setFormData({ ...formData, cep: formattedCep });
+    // Formatação do CEP
+    if (name === "cepRes") {
+      const formattedCep = applyCepMask(value); // Aplica a máscara
+      setFormData((prev) => ({ ...prev, cepRes: formattedCep })); // Atualiza o estado
 
-      if (formattedCep.replace(/\D/g, "").length === 8) {
-        fetchAddress(formattedCep);
+      // Só busca o endereço se o CEP for válido
+      if (validateCep(formattedCep)) {
+        fetchAddress(formattedCep.replace("-", "")); // Remove o hífen antes da consulta
       } else {
-        setErrors({ ...errors, cep: "CEP inválido." });
+        setErrors((prev) => ({ ...prev, cepRes: "CEP inválido." }));
       }
+      return;
     }
     if (name === "senha") {
       const passwordValidation = validatePassword(value);
@@ -620,18 +583,19 @@ const RegisterPage = () => {
           <Label>CEP:</Label>
           <Input
             type="text"
-            name="cep"
+            name="cepRes"
             placeholder="Digite seu CEP..."
-            value={formData.cep || ""}
-            onChange={handleInputChange}
+            value={formData.cepRes || ""} // Exibe o valor formatado
+            onChange={handleInputChange} // Chama o `handleInputChange` para mascarar e validar
             style={{
-              borderColor: errors.cep
+              borderColor: errors.cepRes
                 ? "red"
-                : formData.cep && !errors.cep
+                : formData.cepRes
                 ? "green"
                 : "",
             }}
           />
+          {errors.cepRes && <ErrorMessage>{errors.cepRes}</ErrorMessage>}
           {errors.cep && <ErrorMessage>{errors.cep}</ErrorMessage>}
           <Label>Logradouro:</Label>
           <Input
