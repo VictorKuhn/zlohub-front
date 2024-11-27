@@ -34,12 +34,12 @@ const Header = ({ onToggleSidebar }) => {
   return (
     <>
       <HeaderContainer>
-        <Icon onClick={onToggleSidebar}>
+        <Icon data-testid="menu-icon" onClick={onToggleSidebar}>
           <FaBars />
         </Icon>
         <Logo src="https://i.imgur.com/NiGayqL.png" alt="Logo" />
         <RightSection>
-          <Icon onClick={() => setIsModalOpen(true)}>
+          <Icon data-testid="logout-icon" onClick={() => setIsModalOpen(true)}>
             <FaSignOutAlt />
           </Icon>
         </RightSection>
