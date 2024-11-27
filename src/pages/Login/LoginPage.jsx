@@ -52,23 +52,35 @@ const LoginPage = () => {
         console.log("Token Decodificado:", decoded);
 
         if (decoded.roles === "ROLE_RESPONSÁVEL") {
-          // Faz a consulta dos dados do responsável usando o e-mail
           try {
             const responsibleResponse = await axios.get(
-              `http://localhost:8080/api/responsible/findByEmail/${decoded.sub}`
+              `http://localhost:8080/api/responsible/commonuser/findByEmail/${encodeURIComponent(decoded.sub)}`,
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              }
             );
+
+            console.log("Authorization Header:", `Bearer ${token}`);
 
             const responsavelData = responsibleResponse.data.contentResponse;
-            console.log("Dados do Responsável:", responsavelData);
+            console.log("Response Data:", responsavelData);
 
-            // Armazene os dados no localStorage
-            localStorage.setItem(
-              "responsavelData",
-              JSON.stringify(responsavelData)
-            );
+            if (responsavelData) {
+              console.log("Dados do Responsável:", responsavelData);
 
-            // Redireciona para a página do responsável
-            navigate("/responsavel");
+              // Armazene os dados no localStorage
+              localStorage.setItem(
+                "responsavelData",
+                JSON.stringify(responsavelData)
+              );
+
+              // Redireciona para a página do responsável
+              navigate("/responsavel");
+            } else {
+              throw new Error("Dados do responsável não encontrados.");
+            }
           } catch (error) {
             console.error("Erro ao buscar dados do responsável:", error);
             toast.error(
@@ -76,8 +88,8 @@ const LoginPage = () => {
             );
           }
         } else if (decoded.roles === "ROLE_CUIDADOR") {
+          // Faz a consulta dos dados do cuidador usando o e-mail
           try {
-            // Faz a consulta dos dados do cuidador usando o e-mail
             const cuidadorResponse = await axios.post(
               "http://localhost:8030/api/cuidadores/buscar-por-email",
               {
