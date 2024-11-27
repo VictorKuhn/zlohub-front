@@ -1,4 +1,3 @@
-// src/components/ListaDeCuidadores/ListaDeCuidadores.jsx
 import React, { useEffect, useRef, useState } from "react";
 import CardCuidador from "../CardCuidador/CardCuidador";
 import { SliderContainer, CardsWrapper } from "./ListaDeCuidadores.styles";
@@ -74,6 +73,7 @@ const ListaDeCuidadores = ({ cuidadores }) => {
     <SliderContainer>
       <CardsWrapper
         ref={sliderRef}
+        data-testid="slider"
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUpOrLeave}

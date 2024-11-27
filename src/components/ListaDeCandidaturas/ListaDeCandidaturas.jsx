@@ -59,6 +59,7 @@ const ListaDeCandidaturas = ({ candidaturas, onToastMessage }) => {
         ref={sliderRef}
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
+        data-testid="slider"
         onMouseUp={handleMouseUpOrLeave}
         onMouseLeave={handleMouseUpOrLeave}
       >

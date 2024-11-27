@@ -61,6 +61,7 @@ const ListaDeVagas = ({ vagas, onToastMessage }) => {
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUpOrLeave}
         onMouseLeave={handleMouseUpOrLeave}
+        data-testid="slider"
       >
         {vagas.map((vaga) => (
           <CardVaga key={vaga.id} vaga={vaga} onToastMessage={onToastMessage} />
