@@ -79,3 +79,22 @@ export const ErrorMessage = styled.p`
     margin-bottom: 10px;
     text-align: left;
 `;
+
+export const LoadingSpinner = styled.div`
+    margin: 10px auto;
+    border: 4px solid #f3f3f3; /* Fundo do spinner */
+    border-top: 4px solid #008dc4; /* Cor do spinner */
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    animation: spin 1s linear infinite;
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+`;

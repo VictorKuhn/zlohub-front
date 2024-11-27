@@ -12,11 +12,6 @@ import {
 import { FaTimes } from "react-icons/fa";
 
 const ModalDetalhesCandidatura = ({ candidatura, onClose, onToastMessage }) => {
-  const handleSuccess = () => {
-    if (onToastMessage) {
-      onToastMessage("success", "Candidatura visualizada com sucesso!");
-    }
-  };
 
   return (
     <ModalContainer>
@@ -55,7 +50,6 @@ const ModalDetalhesCandidatura = ({ candidatura, onClose, onToastMessage }) => {
         </ModalInfoGroup>
         <CloseModalButton
           onClick={() => {
-            handleSuccess(); // Notifica sucesso ao fechar
             onClose();
           }}
         >

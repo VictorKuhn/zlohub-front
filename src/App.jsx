@@ -15,6 +15,8 @@ import PainelCuidadores from "./pages/PainelCuidadores/PainelCuidadores";
 import PerfilResponsavel from "./pages/PerfilResponsavel/PerfilResponsavel";
 import MinhasVagasResponsavel from "./pages/MinhasVagasResponsavel/MinhasVagasResponsavel";
 import CandidaturasResponsavel from "./pages/CandidaturasResponsavel/CandidaturasResponsavel";
+import ContratosResponsavel from "./pages/ContratosResponsavel/ContratosResponsavel";
+import ContratosCuidador from "./pages/ContratosCuidador/ContratosCuidador";
 
 function App() {
   return (
@@ -35,6 +37,8 @@ function App() {
         <Route path="/perfilResponsavel" element={<PerfilResponsavel />} />
         <Route path="/minhasVagas" element={<MinhasVagasResponsavel />} />
         <Route path="/candidatos" element={<CandidaturasResponsavel />} />
+        <Route path="/contratosResponsavel" element={<ContratosResponsavel />} />
+        <Route path="/contratosCuidador" element={<ContratosCuidador />} />
       </Routes>
     </>
   );

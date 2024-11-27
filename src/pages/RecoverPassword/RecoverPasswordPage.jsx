@@ -2,21 +2,23 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios';
-import { 
-    RecoverContainer, 
-    BackButton, 
-    Image, 
-    Title, 
-    Subtitle, 
-    Form, 
-    Input, 
+import {
+    RecoverContainer,
+    BackButton,
+    Image,
+    Title,
+    Subtitle,
+    Form,
+    Input,
     Button,
-    ErrorMessage
+    ErrorMessage,
+    LoadingSpinner,
 } from './RecoverPasswordPage.styles';
 
 const RecoverPasswordPage = () => {
     const [email, setEmail] = useState('');
     const [isValidEmail, setIsValidEmail] = useState(true);
+    const [isLoading, setIsLoading] = useState(false); // Estado para o loading
     const navigate = useNavigate();
 
     const handleBackClick = () => {
@@ -43,26 +45,27 @@ const RecoverPasswordPage = () => {
             return;
         }
 
+        setIsLoading(true); // Ativa o loading
+
         try {
             // Faz a requisição para o endpoint de recuperação de senha
             const response = await axios.post('http://localhost:5000/auth/forgot-password', {
                 email,
             });
 
-            // Exibe um toaster de sucesso com a mensagem do backend
-            toast.success(response.data);
-
-            // Redireciona para a página inicial (login)
-            navigate('/');
+            toast.success(response.data); // Exibe mensagem de sucesso
+            navigate('/'); // Redireciona para a página inicial (login)
         } catch (error) {
             console.error('Erro ao enviar e-mail de recuperação:', error);
 
-            // Exibe um toaster de erro com a mensagem do backend
+            // Exibe mensagem de erro retornada pelo backend
             if (error.response && error.response.data) {
                 toast.error(error.response.data);
             } else {
                 toast.error('Erro ao enviar e-mail. Tente novamente mais tarde.');
             }
+        } finally {
+            setIsLoading(false); // Desativa o loading
         }
     };
 
@@ -80,13 +83,19 @@ const RecoverPasswordPage = () => {
                     value={email}
                     onChange={handleEmailChange}
                     style={{
-                        borderColor: isValidEmail 
-                            ? (email ? 'green' : '')
+                        borderColor: isValidEmail
+                            ? email
+                                ? 'green'
+                                : ''
                             : 'red',
                     }}
+                    disabled={isLoading} // Desabilita o input durante o loading
                 />
                 {!isValidEmail && <ErrorMessage>E-mail inválido.</ErrorMessage>}
-                <Button type="submit">Recuperar</Button>
+                <Button type="submit" disabled={isLoading}>
+                    {isLoading ? 'Carregando...' : 'Recuperar'}
+                </Button>
+                {isLoading && <LoadingSpinner />} {/* Exibe o spinner durante o loading */}
             </Form>
         </RecoverContainer>
     );
