@@ -2,7 +2,6 @@
 import React from "react";
 import { render, fireEvent, waitFor } from "@testing-library/react";
 import ModalCriarVaga from "./ModalCriarVaga";
-import axios from "axios"; // Certifique-se de importar o axios
 import "@testing-library/jest-dom";
 
 jest.mock("axios");
