@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import LoginPage from "./pages/Login/LoginPage";
 import CuidadorPage from "./pages/Cuidador/CuidadorPage";
 import ResponsavelPage from "./pages/Responsavel/ResponsavelPage";
@@ -22,24 +22,24 @@ function App() {
   return (
     <>
       <GlobalStyles />
-      <Routes>
-        <Route path="/" element={<LoginPage />} />
-        <Route path="/cuidador" element={<CuidadorPage />} />
-        <Route path="/responsavel" element={<ResponsavelPage />} />
-        <Route path="/admin" element={<AdminPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/recoverPassword" element={<RecoverPasswordPage />} />
-        <Route path="/reset-password/reset-password" element={<ResetPasswordPage />} />
-        <Route path="/vagasCuidador" element={<VagasCuidador />} />
-        <Route path="/candidaturasCuidador" element={<CandidaturasCuidador />} />
-        <Route path="/perfilCuidador" element={<PerfilCuidador />} />
-        <Route path="/painelCuidadores" element={<PainelCuidadores />} />
-        <Route path="/perfilResponsavel" element={<PerfilResponsavel />} />
-        <Route path="/minhasVagas" element={<MinhasVagasResponsavel />} />
-        <Route path="/candidatos" element={<CandidaturasResponsavel />} />
-        <Route path="/contratosResponsavel" element={<ContratosResponsavel />} />
-        <Route path="/contratosCuidador" element={<ContratosCuidador />} />
-      </Routes>
+        <Routes>
+          <Route path="/" element={<LoginPage />} />
+          <Route path="/cuidador" element={<CuidadorPage />} />
+          <Route path="/responsavel" element={<ResponsavelPage />} />
+          <Route path="/admin" element={<AdminPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/recoverPassword" element={<RecoverPasswordPage />} />
+          <Route path="/reset-password/reset-password" element={<ResetPasswordPage />} />
+          <Route path="/vagasCuidador" element={<VagasCuidador />} />
+          <Route path="/candidaturasCuidador" element={<CandidaturasCuidador />} />
+          <Route path="/perfilCuidador" element={<PerfilCuidador />} />
+          <Route path="/painelCuidadores" element={<PainelCuidadores />} />
+          <Route path="/perfilResponsavel" element={<PerfilResponsavel />} />
+          <Route path="/minhasVagas" element={<MinhasVagasResponsavel />} />
+          <Route path="/candidatos" element={<CandidaturasResponsavel />} />
+          <Route path="/contratosResponsavel" element={<ContratosResponsavel />} />
+          <Route path="/contratosCuidador" element={<ContratosCuidador />} />
+        </Routes>
     </>
   );
 }
