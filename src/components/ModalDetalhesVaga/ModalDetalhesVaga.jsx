@@ -101,7 +101,7 @@ const ModalDetalhesVaga = ({ vaga, onClose, onToastMessage }) => {
   return (
     <ModalOverlay onClick={onClose}>
       <ModalContent onClick={(e) => e.stopPropagation()}>
-        <CloseButton onClick={onClose}>
+        <CloseButton onClick={onClose} data-testid="close-button">
           <FaTimes />
         </CloseButton>
         {!isApplying ? (
