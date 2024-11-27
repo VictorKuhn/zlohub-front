@@ -105,15 +105,32 @@ const PerfilResponsavel = () => {
     };
 
     try {
+      const token = localStorage.getItem("token");
+    
+      if (!token) {
+        toast.error("Token não encontrado. Faça login novamente.");
+      }
+    
       await axios.put(
         "http://localhost:8080/api/responsible/commonuser/update",
-        updatedData
+        updatedData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
+    
       localStorage.setItem("responsavelData", JSON.stringify(updatedData));
       toast.success("Dados atualizados com sucesso!");
     } catch (error) {
-      console.error("Erro ao atualizar dados:", error);
-      toast.error("Não foi possível atualizar seus dados.");
+      console.error("Erro ao atualizar dados do responsável:", error);
+    
+      if (error.response && error.response.data) {
+        toast.error(error.response.data.message || "Erro ao atualizar os dados.");
+      } else {
+        toast.error("Erro ao atualizar os dados. Tente novamente mais tarde.");
+      }
     }
   };
 

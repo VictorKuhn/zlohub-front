@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { FaArrowLeft, FaTimes } from "react-icons/fa";
+import { jwtDecode } from "jwt-decode"; // Certifique-se de ter instalado essa biblioteca
 import {
   ModalOverlay,
   ModalContent,
@@ -23,8 +24,22 @@ const ModalDetalhesVaga = ({ vaga, onClose, onToastMessage }) => {
   const [valorHora, setValorHora] = useState(""); // Input para valor por hora
   const [mensagemEnvio, setMensagemEnvio] = useState(""); // Input para mensagem
   const [politicaPrivacidade, setPoliticaPrivacidade] = useState(false); // Checkmark de política
+  const [userRole, setUserRole] = useState(null); // Role do usuário
 
   const cuidadorData = JSON.parse(localStorage.getItem("cuidadorData"));
+
+  // Decodificar o token para obter a role
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        const decoded = jwtDecode(token);
+        setUserRole(decoded.roles);
+      } catch (error) {
+        console.error("Erro ao decodificar o token:", error);
+      }
+    }
+  }, []);
 
   const handleApply = () => {
     setIsApplying(true);
@@ -110,9 +125,12 @@ const ModalDetalhesVaga = ({ vaga, onClose, onToastMessage }) => {
               <ModalInfoTitle>Doença Diagnosticada:</ModalInfoTitle>
               <ModalInfoText>{vaga.doencaDiagnosticada}</ModalInfoText>
             </ModalInfoGroup>
-            <SubmitButton onClick={handleApply}>
-              Quero me candidatar
-            </SubmitButton>
+            {/* Exibe o botão apenas se a role for ROLE_CUIDADOR */}
+            {userRole === "ROLE_CUIDADOR" && (
+              <SubmitButton onClick={handleApply}>
+                Quero me candidatar
+              </SubmitButton>
+            )}
           </SlideContainer>
         ) : (
           <SlideContainer>
