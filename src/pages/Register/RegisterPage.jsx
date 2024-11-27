@@ -307,7 +307,7 @@ const RegisterPage = () => {
     try {
       // Envio para o serviço de cadastro do responsável
       const responsavelResponse = await fetch(
-        "http://localhost:8080/api/responsible/create",
+        "http://zlo-main-app.us-east-1.elasticbeanstalk.com/api/responsible/create",
         {
           method: "POST",
           headers: {
@@ -330,7 +330,7 @@ const RegisterPage = () => {
       }
 
       // Envio para o serviço de autenticação
-      const authResponse = await fetch("http://localhost:5000/auth/register", {
+      const authResponse = await fetch("http://zlo-login-microservice-env-2.eba-cm4nxyyj.us-east-1.elasticbeanstalk.com/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -406,7 +406,7 @@ const RegisterPage = () => {
     try {
       // Chamada ao endpoint do cuidador
       const cuidadorResponse = await fetch(
-        "http://localhost:8030/api/cuidadores",
+        "http://zlo-hub-app.us-east-1.elasticbeanstalk.com/api/cuidadores",
         {
           method: "POST",
           headers: {
@@ -421,7 +421,7 @@ const RegisterPage = () => {
       }
 
       // Chamada ao endpoint de autenticação (somente se o cadastro do cuidador for bem-sucedido)
-      const authResponse = await fetch("http://localhost:5000/auth/register", {
+      const authResponse = await fetch("http://zlo-login-microservice-env-2.eba-cm4nxyyj.us-east-1.elasticbeanstalk.com/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

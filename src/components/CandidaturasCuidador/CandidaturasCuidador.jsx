@@ -65,7 +65,7 @@ const CandidaturasCuidador = () => {
       try {
         const cuidadorData = JSON.parse(localStorage.getItem("cuidadorData"));
         const response = await axios.get(
-          `http://localhost:8030/api/candidaturas/cuidador/${cuidadorData.id}`
+          `http://zlo-hub-app.us-east-1.elasticbeanstalk.com/api/candidaturas/cuidador/${cuidadorData.id}`
         );
         setCandidaturas(response.data);
       } catch (error) {

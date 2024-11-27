@@ -33,7 +33,7 @@ const LoginPage = () => {
     try {
       // Faz login no serviço de autenticação
       const authResponse = await axios.post(
-        "http://localhost:5000/auth/login",
+        "http://zlo-login-microservice-env-2.eba-cm4nxyyj.us-east-1.elasticbeanstalk.com/auth/login",
         {
           email,
           password,
@@ -54,7 +54,7 @@ const LoginPage = () => {
         if (decoded.roles === "ROLE_RESPONSÁVEL") {
           try {
             const responsibleResponse = await axios.get(
-              `http://localhost:8080/api/responsible/commonuser/findByEmail/${encodeURIComponent(decoded.sub)}`,
+              `http://zlo-main-app.us-east-1.elasticbeanstalk.com/api/responsible/commonuser/findByEmail/${encodeURIComponent(decoded.sub)}`,
               {
                 headers: {
                   Authorization: `Bearer ${token}`,
@@ -91,7 +91,7 @@ const LoginPage = () => {
           // Faz a consulta dos dados do cuidador usando o e-mail
           try {
             const cuidadorResponse = await axios.post(
-              "http://localhost:8030/api/cuidadores/buscar-por-email",
+              "http://zlo-hub-app.us-east-1.elasticbeanstalk.com/api/cuidadores/buscar-por-email",
               {
                 email: decoded.sub, // Usa o email extraído do token JWT
               },

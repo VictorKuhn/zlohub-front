@@ -74,7 +74,7 @@ const ModalCriarVaga = ({ onClose, onToastMessage }) => {
 
     console.log("Dados enviados para a API:", formData);
     try {
-      await axios.post("http://localhost:8030/api/vagas", formData);
+      await axios.post("http://zlo-hub-app.us-east-1.elasticbeanstalk.com/api/vagas", formData);
       onToastMessage("success", "Vaga criada com sucesso.");
       onClose();
     } catch (error) {

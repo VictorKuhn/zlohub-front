@@ -84,7 +84,7 @@ const ModalDetalhesVaga = ({ vaga, onClose, onToastMessage }) => {
       };
 
       await axios.post(
-        "http://localhost:8030/api/candidaturas",
+        "http://zlo-hub-app.us-east-1.elasticbeanstalk.com/api/candidaturas",
         candidaturaData
       );
 

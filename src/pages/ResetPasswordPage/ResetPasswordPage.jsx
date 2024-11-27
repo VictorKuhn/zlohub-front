@@ -67,7 +67,7 @@ const ResetPasswordPage = () => {
     try {
       // eslint-disable-next-line no-unused-vars
       const response = await axios.post(
-        "http://localhost:5000/auth/reset-password",
+        "http://zlo-login-microservice-env-2.eba-cm4nxyyj.us-east-1.elasticbeanstalk.com/auth/reset-password",
         {
           token,
           newPassword: password,

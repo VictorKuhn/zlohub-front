@@ -60,7 +60,7 @@ const VagasCuidador = () => {
   useEffect(() => {
     const fetchVagas = async () => {
       try {
-        const response = await axios.get("http://localhost:8030/api/vagas");
+        const response = await axios.get("http://zlo-hub-app.us-east-1.elasticbeanstalk.com0/api/vagas");
         setVagas(response.data.filter((vaga) => vaga.status === "ATIVA"));
       } catch (error) {
         console.error("Erro ao carregar vagas:", error);

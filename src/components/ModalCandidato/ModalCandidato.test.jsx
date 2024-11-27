@@ -64,7 +64,7 @@ describe("ModalCandidato Component", () => {
 
     await waitFor(() => {
       expect(axios.patch).toHaveBeenCalledWith(
-        "http://localhost:8030/api/candidaturas/status",
+        "http://zlo-hub-app.us-east-1.elasticbeanstalk.com/api/candidaturas/status",
         {
           id: mockCandidatura.id,
           status: "ACEITO",

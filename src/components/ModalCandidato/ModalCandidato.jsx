@@ -30,7 +30,7 @@ const ModalCandidato = ({ candidatura, onClose, onToastMessage }) => {
         status: selectedStatus,
       };
 
-      await axios.patch("http://localhost:8030/api/candidaturas/status", payload);
+      await axios.patch("http://zlo-hub-app.us-east-1.elasticbeanstalk.com/api/candidaturas/status", payload);
 
       onToastMessage("success", "Status atualizado com sucesso!");
       candidatura.status = selectedStatus; // Atualiza o status localmente
