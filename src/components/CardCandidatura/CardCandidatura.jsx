@@ -18,7 +18,7 @@ const CardCandidatura = ({ candidatura, onToastMessage }) => {
 
   return (
     <>
-      <CardContainer>
+      <CardContainer data-testid="card-candidatura">
         <CardTitle title={candidatura.vaga.titulo}>
           {truncateText(candidatura.vaga.titulo, 40)}
         </CardTitle>
