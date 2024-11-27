@@ -15,6 +15,7 @@ import {
 
 const ModalCriarVaga = ({ onClose, onToastMessage }) => {
   const responsavelData = JSON.parse(localStorage.getItem("responsavelData"));
+  const [error, setError] = useState("");
   const [formData, setFormData] = useState({
     cpfResponsavel: responsavelData.cpfRes,
     titulo: "",
@@ -31,7 +32,23 @@ const ModalCriarVaga = ({ onClose, onToastMessage }) => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+
+    // Atualiza o valor do campo
     setFormData((prev) => ({ ...prev, [name]: value }));
+
+    // Valida as datas
+    if (name === "dataHoraInicio" || name === "dataHoraFim") {
+      const dataInicio =
+        name === "dataHoraInicio" ? value : formData.dataHoraInicio;
+      const dataFim = name === "dataHoraFim" ? value : formData.dataHoraFim;
+
+      // Verifica se a data/hora final é menor que a inicial
+      if (dataInicio && dataFim && new Date(dataFim) < new Date(dataInicio)) {
+        setError("A Data/Hora Fim não pode ser anterior à Data/Hora Início.");
+      } else {
+        setError(""); // Limpa o erro caso esteja correto
+      }
+    }
   };
 
   const handleSubmit = async () => {
@@ -47,6 +64,11 @@ const ModalCriarVaga = ({ onClose, onToastMessage }) => {
       !formData.doencaDiagnosticada
     ) {
       onToastMessage("error", "Confira os dados preenchidos.");
+      return;
+    }
+
+    if (error) {
+      onToastMessage("error", error);
       return;
     }
 
@@ -180,6 +202,11 @@ const ModalCriarVaga = ({ onClose, onToastMessage }) => {
               onChange={handleInputChange}
             />
           </Section>
+          {error && (
+            <p style={{ color: "red", fontSize: "14px", marginTop: "-10px" }}>
+              {error}
+            </p>
+          )}
           <Button type="button" onClick={handleSubmit}>
             Criar Vaga
           </Button>

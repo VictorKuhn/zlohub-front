@@ -14,7 +14,6 @@ import {
   Button,
   Title,
   Section,
-  CheckboxContainer,
 } from "./PerfilCuidador.styles";
 
 const PerfilCuidador = () => {
@@ -339,21 +338,6 @@ const PerfilCuidador = () => {
             />
           </InputContainer>
         </Section>
-        <CheckboxContainer>
-          <label>
-            <input
-              type="checkbox"
-              checked={formData.politicaAceita || false}
-              onChange={(e) =>
-                setFormData((prev) => ({
-                  ...prev,
-                  politicaAceita: e.target.checked,
-                }))
-              }
-            />
-            Aceito as políticas da plataforma
-          </label>
-        </CheckboxContainer>
         <p>Caso deseje alterar sua senha, retorne a tela de Login e clique em "Esqueci a senha".</p>
         <Button type="submit">Alterar dados</Button>
       </Form>
