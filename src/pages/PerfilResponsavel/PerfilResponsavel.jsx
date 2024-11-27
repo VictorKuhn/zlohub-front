@@ -112,7 +112,7 @@ const PerfilResponsavel = () => {
       }
     
       await axios.put(
-        "http://localhost:8080/api/responsible/commonuser/update",
+        "http://zlo-main-app.us-east-1.elasticbeanstalk.com/api/responsible/commonuser/update",
         updatedData,
         {
           headers: {

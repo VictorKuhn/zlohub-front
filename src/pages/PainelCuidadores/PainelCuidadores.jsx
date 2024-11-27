@@ -61,7 +61,7 @@ const PainelCuidadores = () => {
     const fetchCuidadores = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8030/api/cuidadores"
+          "http://zlo-hub-app.us-east-1.elasticbeanstalk.com/api/cuidadores"
         );
         setCuidadores(response.data); // Salva os cuidadores no estado
       } catch (error) {

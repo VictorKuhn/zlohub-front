@@ -22,7 +22,7 @@ const ContratosCuidador = () => {
       try {
         // Busca todas as candidaturas do cuidador
         const candidaturasResponse = await axios.get(
-          `http://localhost:8030/api/candidaturas/cuidador/${cuidadorData.id}`
+          `http://zlo-hub-app.us-east-1.elasticbeanstalk.com/api/candidaturas/cuidador/${cuidadorData.id}`
         );
         const candidaturas = candidaturasResponse.data;
 

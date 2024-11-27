@@ -101,7 +101,7 @@ const PerfilCuidador = () => {
 
     try {
       await axios.put(
-        `http://localhost:8030/api/cuidadores/${cuidadorData.id}`,
+        `http://zlo-hub-app.us-east-1.elasticbeanstalk.com/api/cuidadores/${cuidadorData.id}`,
         formData
       );
       localStorage.setItem("cuidadorData", JSON.stringify(formData));

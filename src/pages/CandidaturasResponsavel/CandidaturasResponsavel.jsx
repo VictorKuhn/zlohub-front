@@ -34,13 +34,13 @@ const CandidaturasResponsavel = () => {
       try {
         // Busca as vagas pelo CPF do responsável
         const vagasResponse = await axios.get(
-          `http://localhost:8030/api/vagas/responsavel/${responsavelData.cpfRes}`
+          `http://zlo-hub-app.us-east-1.elasticbeanstalk.com/api/vagas/responsavel/${responsavelData.cpfRes}`
         );
         const vagas = vagasResponse.data;
 
         // Busca as candidaturas de cada vaga
         const candidaturasPromises = vagas.map((vaga) =>
-          axios.get(`http://localhost:8030/api/candidaturas/vaga/${vaga.id}`)
+          axios.get(`http://zlo-hub-app.us-east-1.elasticbeanstalk.com/api/candidaturas/vaga/${vaga.id}`)
         );
 
         const candidaturasResponses = await Promise.all(candidaturasPromises);
@@ -53,7 +53,7 @@ const CandidaturasResponsavel = () => {
           allCandidaturas.map(async (candidatura) => {
             try {
               const cuidadorResponse = await axios.get(
-                `http://localhost:8030/api/cuidadores/${candidatura.cuidadorId}`
+                `http://zlo-hub-app.us-east-1.elasticbeanstalk.com/api/cuidadores/${candidatura.cuidadorId}`
               );
               return { ...candidatura, cuidador: cuidadorResponse.data };
             } catch (error) {

@@ -50,7 +50,7 @@ const MinhasVagasResponsavel = () => {
   useEffect(() => {
     const fetchMinhasVagas = async () => {
       try {
-        const response = await axios.get("http://localhost:8030/api/vagas");
+        const response = await axios.get("http://zlo-hub-app.us-east-1.elasticbeanstalk.com/api/vagas");
         setMinhasVagas(
           response.data.filter(
             (vaga) => vaga.cpfResponsavel === responsavelData.cpfRes

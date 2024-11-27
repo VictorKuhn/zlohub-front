@@ -49,7 +49,7 @@ const RecoverPasswordPage = () => {
 
         try {
             // Faz a requisição para o endpoint de recuperação de senha
-            const response = await axios.post('http://localhost:5000/auth/forgot-password', {
+            const response = await axios.post('http://zlo-login-microservice-env-2.eba-cm4nxyyj.us-east-1.elasticbeanstalk.com/auth/forgot-password', {
                 email,
             });
 

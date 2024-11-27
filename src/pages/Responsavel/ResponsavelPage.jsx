@@ -27,7 +27,7 @@ const ResponsavelPage = () => {
     // Fetch cuidadores disponíveis
     const fetchCuidadores = async () => {
       try {
-        const response = await axios.get("http://localhost:8030/api/cuidadores");
+        const response = await axios.get("http://zlo-hub-app.us-east-1.elasticbeanstalk.com/api/cuidadores");
         setCuidadores(response.data);
       } catch (error) {
         console.error("Erro ao carregar cuidadores:", error);
@@ -38,7 +38,7 @@ const ResponsavelPage = () => {
     // Fetch vagas do responsável
     const fetchMinhasVagas = async () => {
       try {
-        const response = await axios.get("http://localhost:8030/api/vagas");
+        const response = await axios.get("http://zlo-hub-app.us-east-1.elasticbeanstalk.com/api/vagas");
         setMinhasVagas(
           response.data.filter(
             (vaga) => vaga.cpfResponsavel === responsavelData.cpfRes

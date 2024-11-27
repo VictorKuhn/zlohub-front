@@ -16,7 +16,7 @@ const CuidadorPage = () => {
   useEffect(() => {
     const fetchVagas = async () => {
       try {
-        const response = await axios.get("http://localhost:8030/api/vagas");
+        const response = await axios.get("http://zlo-hub-app.us-east-1.elasticbeanstalk.com/api/vagas");
         setVagas(response.data.filter((vaga) => vaga.status === "ATIVA"));
       } catch (error) {
         console.error("Erro ao carregar vagas:", error);
@@ -46,7 +46,7 @@ const CuidadorPage = () => {
       try {
         const cuidadorData = JSON.parse(localStorage.getItem("cuidadorData"));
         const response = await axios.get(
-          `http://localhost:8030/api/candidaturas/cuidador/${cuidadorData.id}`
+          `http://zlo-hub-app.us-east-1.elasticbeanstalk.com/api/candidaturas/cuidador/${cuidadorData.id}`
         );
         setCandidaturas(response.data);
       } catch (error) {
