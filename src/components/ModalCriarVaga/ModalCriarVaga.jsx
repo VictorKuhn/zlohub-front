@@ -94,6 +94,7 @@ const ModalCriarVaga = ({ onClose, onToastMessage }) => {
             <Input
               type="text"
               name="titulo"
+              data-testid="titulo-input"
               value={formData.titulo}
               onChange={handleInputChange}
             />
@@ -103,6 +104,7 @@ const ModalCriarVaga = ({ onClose, onToastMessage }) => {
             <Input
               type="text"
               name="descricao"
+              data-testid="descricao-input"
               value={formData.descricao}
               onChange={handleInputChange}
             />
@@ -112,6 +114,7 @@ const ModalCriarVaga = ({ onClose, onToastMessage }) => {
             <Input
               type="datetime-local"
               name="dataHoraInicio"
+              data-testid="dataHoraInicio-input"
               value={formData.dataHoraInicio}
               onChange={handleInputChange}
             />
@@ -121,6 +124,7 @@ const ModalCriarVaga = ({ onClose, onToastMessage }) => {
             <Input
               type="datetime-local"
               name="dataHoraFim"
+              data-testid="dataHoraFim-input"
               value={formData.dataHoraFim}
               onChange={handleInputChange}
             />
@@ -130,6 +134,7 @@ const ModalCriarVaga = ({ onClose, onToastMessage }) => {
             <Input
               type="text"
               name="cidade"
+              data-testid="cidade-input"
               value={formData.cidade}
               onChange={handleInputChange}
             />
@@ -138,6 +143,7 @@ const ModalCriarVaga = ({ onClose, onToastMessage }) => {
             <Label>Estado</Label>
             <Select
               name="estado"
+              data-testid="estado-select"
               value={formData.estado}
               onChange={handleInputChange}
             >
