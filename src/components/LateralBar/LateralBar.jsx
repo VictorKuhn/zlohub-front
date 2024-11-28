@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   FaBriefcase,
@@ -21,45 +21,55 @@ import {
 } from "./LateralBar.styles";
 import { jwtDecode } from "jwt-decode";
 
-const LateralBar = ({ isMobileMenuOpen, onToggleMobileMenu }) => {
+const LateralBar = ({ isMobileMenuOpen }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [userRole, setUserRole] = useState(null);
   const [userName, setUserName] = useState("");
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    const decodedToken = token ? jwtDecode(token) : null;
+  // Função para tratar dados de cuidadores
+  const setCuidadorUserName = useCallback(() => {
+    const cuidadorData = JSON.parse(localStorage.getItem("cuidadorData"));
+    setUserName(cuidadorData?.nome || "Cuidador");
+  }, []);
 
-    if (decodedToken) {
+  // Função para tratar dados de responsáveis
+  const setResponsavelUserName = useCallback(() => {
+    const responsavelData = JSON.parse(localStorage.getItem("responsavelData"));
+    const firstName = responsavelData?.nomeRes?.split(" ")[0] || "RESPONSAVEL";
+    setUserName(firstName);
+  }, []);
+
+  // Função para processar o token e definir role e username
+  const processToken = useCallback(
+    (token) => {
+      const decodedToken = token ? jwtDecode(token) : null;
+      if (!decodedToken) {
+        setUserName("Usuário");
+        return;
+      }
+
       const role = decodedToken.roles;
       setUserRole(role);
 
-      if (role === "ROLE_CUIDADOR") {
-        const cuidadorData = JSON.parse(localStorage.getItem("cuidadorData"));
-        if (cuidadorData) {
-          setUserName(cuidadorData.nome);
-        } else {
-          setUserName("Cuidador");
-        }
-      } else if (role === "ROLE_RESPONSAVEL") {
-        const responsavelData = JSON.parse(
-          localStorage.getItem("responsavelData")
-        );
-        if (responsavelData && responsavelData.nomeRes) {
-          // Tratamento para exibir apenas o primeiro nome
-          const firstName = responsavelData.nomeRes.split(" ")[0];
-          setUserName(firstName);
-        } else {
-          setUserName("RESPONSAVEL");
-        }
-      } else {
-        setUserName("Usuário");
+      switch (role) {
+        case "ROLE_CUIDADOR":
+          setCuidadorUserName();
+          break;
+        case "ROLE_RESPONSAVEL":
+          setResponsavelUserName();
+          break;
+        default:
+          setUserName("Usuário");
       }
-    } else {
-      setUserName("Usuário");
-    }
-  }, []);
+    },
+    [setCuidadorUserName, setResponsavelUserName]
+  );
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    processToken(token);
+  }, [processToken]);
 
   const handleNavigation = (path) => {
     navigate(path);
