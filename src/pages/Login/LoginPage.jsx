@@ -51,7 +51,7 @@ const LoginPage = () => {
         const decoded = jwtDecode(token);
         console.log("Token Decodificado:", decoded);
 
-        if (decoded.roles === "ROLE_RESPONSÁVEL") {
+        if (decoded.roles === "ROLE_RESPONSAVEL") {
           try {
             const responsibleResponse = await axios.get(
               `http://zlo-main-app.us-east-1.elasticbeanstalk.com/api/responsible/commonuser/findByEmail/${encodeURIComponent(decoded.sub)}`,
@@ -68,7 +68,7 @@ const LoginPage = () => {
             console.log("Response Data:", responsavelData);
 
             if (responsavelData) {
-              console.log("Dados do Responsável:", responsavelData);
+              console.log("Dados do RESPONSAVEL:", responsavelData);
 
               // Armazene os dados no localStorage
               localStorage.setItem(
@@ -76,15 +76,15 @@ const LoginPage = () => {
                 JSON.stringify(responsavelData)
               );
 
-              // Redireciona para a página do responsável
+              // Redireciona para a página do RESPONSAVEL
               navigate("/responsavel");
             } else {
-              throw new Error("Dados do responsável não encontrados.");
+              throw new Error("Dados do RESPONSAVEL não encontrados.");
             }
           } catch (error) {
-            console.error("Erro ao buscar dados do responsável:", error);
+            console.error("Erro ao buscar dados do RESPONSAVEL:", error);
             toast.error(
-              "Erro ao buscar dados do responsável. Tente novamente mais tarde."
+              "Erro ao buscar dados do RESPONSAVEL. Tente novamente mais tarde."
             );
           }
         } else if (decoded.roles === "ROLE_CUIDADOR") {

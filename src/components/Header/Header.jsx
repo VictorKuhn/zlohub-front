@@ -18,7 +18,7 @@ const Header = ({ onToggleSidebar }) => {
       if (userRole === "ROLE_CUIDADOR") {
         localStorage.removeItem("token");
         localStorage.removeItem("cuidadorData");
-      } else if (userRole === "ROLE_RESPONSÁVEL") {
+      } else if (userRole === "ROLE_RESPONSAVEL") {
         localStorage.removeItem("token");
         localStorage.removeItem("responsavelData");
       } else if (userRole === "ROLE_ADMIN") {

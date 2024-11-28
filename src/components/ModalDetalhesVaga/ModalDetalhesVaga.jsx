@@ -145,7 +145,7 @@ const ModalDetalhesVaga = ({ vaga, onClose, onToastMessage }) => {
               onChange={handleValorHoraChange}
             />
             <TextArea
-              placeholder="Mensagem para o responsável pela vaga"
+              placeholder="Mensagem para o RESPONSAVEL pela vaga"
               value={mensagemEnvio}
               onChange={(e) => {
                 const newValue = e.target.value;

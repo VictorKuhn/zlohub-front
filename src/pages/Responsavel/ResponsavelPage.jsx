@@ -35,7 +35,7 @@ const ResponsavelPage = () => {
       }
     };
 
-    // Fetch vagas do responsável
+    // Fetch vagas do RESPONSAVEL
     const fetchMinhasVagas = async () => {
       try {
         const response = await axios.get("http://zlo-hub-app.us-east-1.elasticbeanstalk.com/api/vagas");
