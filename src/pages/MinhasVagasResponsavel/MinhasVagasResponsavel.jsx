@@ -34,7 +34,7 @@ const MinhasVagasResponsavel = () => {
 
     try {
       const decoded = jwtDecode(token);
-      const isRoleResponsavel = decoded.roles === "ROLE_RESPONSÁVEL";
+      const isRoleResponsavel = decoded.roles === "ROLE_RESPONSAVEL";
       const isTokenValid = decoded.exp * 1000 > Date.now();
 
       if (!isRoleResponsavel || !isTokenValid) {
@@ -46,7 +46,7 @@ const MinhasVagasResponsavel = () => {
     }
   }, [navigate]);
 
-  // Fetch das vagas do responsável
+  // Fetch das vagas do RESPONSAVEL
   useEffect(() => {
     const fetchMinhasVagas = async () => {
       try {

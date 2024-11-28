@@ -42,7 +42,7 @@ const LateralBar = ({ isMobileMenuOpen, onToggleMobileMenu }) => {
         } else {
           setUserName("Cuidador");
         }
-      } else if (role === "ROLE_RESPONSÁVEL") {
+      } else if (role === "ROLE_RESPONSAVEL") {
         const responsavelData = JSON.parse(
           localStorage.getItem("responsavelData")
         );
@@ -51,7 +51,7 @@ const LateralBar = ({ isMobileMenuOpen, onToggleMobileMenu }) => {
           const firstName = responsavelData.nomeRes.split(" ")[0];
           setUserName(firstName);
         } else {
-          setUserName("Responsável");
+          setUserName("RESPONSAVEL");
         }
       } else {
         setUserName("Usuário");
@@ -93,7 +93,7 @@ const LateralBar = ({ isMobileMenuOpen, onToggleMobileMenu }) => {
         onClick: () => handleNavigation("/perfilCuidador"),
       },
     ],
-    ROLE_RESPONSÁVEL: [
+    ROLE_RESPONSAVEL: [
       {
         label: "Início",
         icon: <FaHome />,

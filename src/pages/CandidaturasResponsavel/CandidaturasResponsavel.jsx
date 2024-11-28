@@ -28,11 +28,11 @@ const CandidaturasResponsavel = () => {
     }
   };
 
-  // Fetch candidaturas relacionadas às vagas do responsável
+  // Fetch candidaturas relacionadas às vagas do RESPONSAVEL
   useEffect(() => {
     const fetchCandidaturas = async () => {
       try {
-        // Busca as vagas pelo CPF do responsável
+        // Busca as vagas pelo CPF do RESPONSAVEL
         const vagasResponse = await axios.get(
           `http://zlo-hub-app.us-east-1.elasticbeanstalk.com/api/vagas/responsavel/${responsavelData.cpfRes}`
         );

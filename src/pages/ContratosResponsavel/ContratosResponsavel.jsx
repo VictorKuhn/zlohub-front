@@ -19,11 +19,11 @@ const ContratosResponsavel = () => {
 
   const responsavelData = JSON.parse(localStorage.getItem("responsavelData"));
 
-  // Fetch contratos relacionados às vagas do responsável
+  // Fetch contratos relacionados às vagas do RESPONSAVEL
   useEffect(() => {
     const fetchContratos = async () => {
       try {
-        // Busca as vagas pelo CPF do responsável
+        // Busca as vagas pelo CPF do RESPONSAVEL
         const vagasResponse = await axios.get(
           `http://zlo-hub-app.us-east-1.elasticbeanstalk.com/api/vagas/responsavel/${responsavelData.cpfRes}`
         );

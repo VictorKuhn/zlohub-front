@@ -277,7 +277,7 @@ const RegisterPage = () => {
       return;
     }
 
-    // Dados para o endpoint do responsável
+    // Dados para o endpoint do RESPONSAVEL
     const responsavelData = {
       cpfRes: formData.cpfRes,
       nomeRes: formData.nomeRes,
@@ -301,11 +301,11 @@ const RegisterPage = () => {
     const authDataResponsavel = {
       email: formData.email,
       password,
-      role: "RESPONSÁVEL", // Exclusivo para responsável
+      role: "RESPONSAVEL", // Exclusivo para RESPONSAVEL
     };
 
     try {
-      // Envio para o serviço de cadastro do responsável
+      // Envio para o serviço de cadastro do RESPONSAVEL
       const responsavelResponse = await fetch(
         "http://zlo-main-app.us-east-1.elasticbeanstalk.com/api/responsible/create",
         {
@@ -325,7 +325,7 @@ const RegisterPage = () => {
         responsavelResult.infoMessage !== "Sucesso"
       ) {
         throw new Error(
-          responsavelResult.statusMessage || "Erro no cadastro do responsável."
+          responsavelResult.statusMessage || "Erro no cadastro do RESPONSAVEL."
         );
       }
 
@@ -462,7 +462,7 @@ const RegisterPage = () => {
           selected={role === "RESPONSAVEL"}
           onClick={() => handleRoleChange("RESPONSAVEL")}
         >
-          Sou um Responsável
+          Sou um RESPONSAVEL
         </RoleOption>
       </RoleSelectionContainer>
       {role === "CUIDADOR" && (
@@ -820,7 +820,7 @@ const RegisterPage = () => {
       )}
       {role === "RESPONSAVEL" && (
         <Form onSubmit={handleSubmitResponsavel}>
-          {/* Formulário para "Sou um Responsável" */}
+          {/* Formulário para "Sou um RESPONSAVEL" */}
           <Label>Nome:</Label>
           <Input
             type="text"

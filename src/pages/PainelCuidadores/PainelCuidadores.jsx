@@ -31,7 +31,7 @@ const PainelCuidadores = () => {
 
     try {
       const decoded = jwtDecode(token);
-      const isRoleResponsavel = decoded.roles === "ROLE_RESPONSÁVEL";
+      const isRoleResponsavel = decoded.roles === "ROLE_RESPONSAVEL";
       const isTokenValid = decoded.exp * 1000 > Date.now();
 
       if (!isRoleResponsavel || !isTokenValid) {

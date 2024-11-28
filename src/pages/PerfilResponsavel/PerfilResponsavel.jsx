@@ -35,7 +35,7 @@ const PerfilResponsavel = () => {
       const decoded = jwtDecode(token);
       const isTokenValid = decoded.exp * 1000 > Date.now();
 
-      if (!isTokenValid || decoded.roles !== "ROLE_RESPONSÁVEL") {
+      if (!isTokenValid || decoded.roles !== "ROLE_RESPONSAVEL") {
         localStorage.removeItem("token");
         localStorage.removeItem("responsavelData");
         navigate("/login");
@@ -124,7 +124,7 @@ const PerfilResponsavel = () => {
       localStorage.setItem("responsavelData", JSON.stringify(updatedData));
       toast.success("Dados atualizados com sucesso!");
     } catch (error) {
-      console.error("Erro ao atualizar dados do responsável:", error);
+      console.error("Erro ao atualizar dados do RESPONSAVEL:", error);
     
       if (error.response && error.response.data) {
         toast.error(error.response.data.message || "Erro ao atualizar os dados.");
