@@ -30,11 +30,11 @@ jobs:
 
     # 5. Deploy para o S3
     - name: Deploy to S3
-      uses: jakejarvis/s3-sync-action@v0.6.0
+      uses: jakejarvis/s3-sync-action@v0.5.1
       with:
         args: --acl public-read --delete
       env:
-        AWS_S3_BUCKET: "zlo-hub-app" # Nome do bucket S3
+        AWS_S3_BUCKET: "zlo-hub-app"
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         SOURCE_DIR: "build" # Diretório gerado pelo build do React
