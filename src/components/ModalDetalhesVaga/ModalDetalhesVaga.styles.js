@@ -1,23 +1,4 @@
-import styled, { keyframes } from "styled-components";
-
-// Animação para o slide
-const slideRight = keyframes`
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(100%);
-  }
-`;
-
-const slideLeft = keyframes`
-  from {
-    transform: translateX(100%);
-  }
-  to {
-    transform: translateX(0);
-  }
-`;
+import styled from "styled-components";
 
 export const ModalOverlay = styled.div`
   position: fixed;
