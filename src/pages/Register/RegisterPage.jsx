@@ -119,12 +119,12 @@ const RegisterPage = () => {
     try {
       const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
       const data = await response.json();
-  
+
       if (data.erro) {
         setErrors((prev) => ({ ...prev, cepRes: "CEP não encontrado." }));
         return;
       }
-  
+
       // Atualiza apenas os campos relacionados ao endereço
       setFormData((prev) => ({
         ...prev,
@@ -133,7 +133,7 @@ const RegisterPage = () => {
         cidade: data.localidade || "",
         estado: data.uf || "",
       }));
-  
+
       // Remove qualquer erro do CEP
       setErrors((prev) => ({ ...prev, cepRes: "" }));
     } catch (error) {
@@ -141,97 +141,103 @@ const RegisterPage = () => {
       setErrors((prev) => ({ ...prev, cepRes: "Erro ao buscar o CEP." }));
     }
   };
-  
 
   // Verificação da confirmação da senha
   const validateConfirmPassword = (password, confirmPassword) => {
     return password === confirmPassword;
   };
 
+  const handleEmailChange = (value) => {
+    setErrors({
+      ...errors,
+      email: !validateEmail(value) ? "E-mail inválido." : "",
+    });
+  };
+
+  const handleCpfChange = (value) => {
+    const formattedCpf = value
+      .replace(/\D/g, "")
+      .replace(/(\d{3})(\d)/, "$1.$2")
+      .replace(/(\d{3})(\d)/, "$1.$2")
+      .replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+    setFormData({ ...formData, cpf: formattedCpf });
+    setErrors({
+      ...errors,
+      cpf: !validateCpf(formattedCpf) ? "CPF inválido." : "",
+    });
+  };
+
+  const handleCepChange = (value) => {
+    const formattedCep = applyCepMask(value);
+    setFormData((prev) => ({ ...prev, cepRes: formattedCep }));
+    if (validateCep(formattedCep)) {
+      fetchAddress(formattedCep.replace("-", ""));
+    } else {
+      setErrors((prev) => ({ ...prev, cepRes: "CEP inválido." }));
+    }
+  };
+
+  const handleSenhaChange = (value) => {
+    const passwordValidation = validatePassword(value);
+    setPassword(value);
+    setErrors({
+      ...errors,
+      senha: passwordValidation,
+    });
+  };
+
+  const handleConfirmPasswordChange = (value) => {
+    setConfirmPassword(value);
+    setErrors({
+      ...errors,
+      confirmPassword: !validateConfirmPassword(password, value)
+        ? "As senhas não coincidem."
+        : "",
+    });
+  };
+
+  const handlePhoneChange = (name, value) => {
+    const formattedPhone = value
+      .replace(/\D/g, "")
+      .replace(
+        /(\d{2})(\d{4,5})(\d{4})$/,
+        value.length > 10 ? "($1) $2-$3" : "($1) $2-$3"
+      );
+    setFormData({ ...formData, [name]: formattedPhone });
+    setErrors({
+      ...errors,
+      [name]: !validatePhone(formattedPhone) ? "Telefone inválido." : "",
+    });
+  };
+
+  const handleDataNascimentoChange = (value) => {
+    setErrors({
+      ...errors,
+      dataNascimento: value ? "" : "Data de nascimento inválida.",
+    });
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
 
-    // Validações específicas
     if (name === "email") {
-      setErrors({
-        ...errors,
-        email: !validateEmail(value) ? "E-mail inválido." : "",
-      });
-    }
-    if (name === "cpf") {
-      const formattedCpf = value
-        .replace(/\D/g, "")
-        .replace(/(\d{3})(\d)/, "$1.$2")
-        .replace(/(\d{3})(\d)/, "$1.$2")
-        .replace(/(\d{3})(\d{1,2})$/, "$1-$2");
-      setFormData({ ...formData, cpf: formattedCpf });
-      setErrors({
-        ...errors,
-        cpf: !validateCpf(formattedCpf) ? "CPF inválido." : "",
-      });
-    }
-    // Formatação do CEP
-    if (name === "cepRes") {
-      const formattedCep = applyCepMask(value); // Aplica a máscara
-      setFormData((prev) => ({ ...prev, cepRes: formattedCep })); // Atualiza o estado
-
-      // Só busca o endereço se o CEP for válido
-      if (validateCep(formattedCep)) {
-        fetchAddress(formattedCep.replace("-", "")); // Remove o hífen antes da consulta
-      } else {
-        setErrors((prev) => ({ ...prev, cepRes: "CEP inválido." }));
-      }
-      return;
-    }
-    if (name === "senha") {
-      const passwordValidation = validatePassword(value);
-      setPassword(value);
-      setErrors({
-        ...errors,
-        senha: passwordValidation,
-      });
-    }
-    if (name === "confirmPassword") {
-      setConfirmPassword(value);
-      setErrors({
-        ...errors,
-        confirmPassword: !validateConfirmPassword(password, value)
-          ? "As senhas não coincidem."
-          : "",
-      });
-    }
-    if (name.startsWith("telefoneContato")) {
-      const formattedPhone = value
-        .replace(/\D/g, "") // Remove tudo que não for número
-        .replace(
-          /(\d{2})(\d{4,5})(\d{4})$/,
-          value.length > 10 ? "($1) $2-$3" : "($1) $2-$3"
-        );
-      setFormData({ ...formData, [name]: formattedPhone });
-      setErrors({
-        ...errors,
-        [name]: !validatePhone(formattedPhone) ? "Telefone inválido." : "",
-      });
-    }
-    if (name.startsWith("telefoneReferencia")) {
-      const formattedPhone = value
-        .replace(/\D/g, "") // Remove tudo que não for número
-        .replace(
-          /(\d{2})(\d{4,5})(\d{4})$/,
-          value.length > 10 ? "($1) $2-$3" : "($1) $2-$3"
-        );
-      setFormData({ ...formData, [name]: formattedPhone });
-      setErrors({
-        ...errors,
-        [name]: !validatePhone(formattedPhone) ? "Telefone inválido." : "",
-      });
-    }
-    if (name === "dataNascimento") {
-      setErrors({
-        ...errors,
-        dataNascimento: value ? "" : "Data de nascimento inválida.",
-      });
+      handleEmailChange(value);
+    } else if (name === "cpf") {
+      handleCpfChange(value);
+    } else if (name === "cepRes") {
+      handleCepChange(value);
+    } else if (name === "senha") {
+      handleSenhaChange(value);
+    } else if (name === "confirmPassword") {
+      handleConfirmPasswordChange(value);
+    } else if (
+      name.startsWith("telefoneContato") ||
+      name.startsWith("telefoneReferencia")
+    ) {
+      handlePhoneChange(name, value);
+    } else if (name === "dataNascimento") {
+      handleDataNascimentoChange(value);
     }
   };
 
@@ -330,13 +336,16 @@ const RegisterPage = () => {
       }
 
       // Envio para o serviço de autenticação
-      const authResponse = await fetch("http://zlo-login-microservice-env-2.eba-cm4nxyyj.us-east-1.elasticbeanstalk.com/auth/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(authDataResponsavel),
-      });
+      const authResponse = await fetch(
+        "http://zlo-login-microservice-env-2.eba-cm4nxyyj.us-east-1.elasticbeanstalk.com/auth/register",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(authDataResponsavel),
+        }
+      );
 
       if (!authResponse.ok) {
         throw new Error("Erro no cadastro de autenticação.");
@@ -421,13 +430,16 @@ const RegisterPage = () => {
       }
 
       // Chamada ao endpoint de autenticação (somente se o cadastro do cuidador for bem-sucedido)
-      const authResponse = await fetch("http://zlo-login-microservice-env-2.eba-cm4nxyyj.us-east-1.elasticbeanstalk.com/auth/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(authData),
-      });
+      const authResponse = await fetch(
+        "http://zlo-login-microservice-env-2.eba-cm4nxyyj.us-east-1.elasticbeanstalk.com/auth/register",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(authData),
+        }
+      );
 
       if (!authResponse.ok) {
         throw new Error("Erro no cadastro de autenticação.");
