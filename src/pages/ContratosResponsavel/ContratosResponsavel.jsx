@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import Header from "../../components/Header/Header";
 import LateralBar from "../../components/LateralBar/LateralBar";
@@ -15,67 +15,87 @@ import toast, { Toaster } from "react-hot-toast";
 const ContratosResponsavel = () => {
   const [contratos, setContratos] = useState([]);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [selectedContrato, setSelectedContrato] = useState(null); // Estado para o contrato selecionado no modal
+  const [selectedContrato, setSelectedContrato] = useState(null);
 
   const responsavelData = JSON.parse(localStorage.getItem("responsavelData"));
 
-  // Fetch contratos relacionados às vagas do RESPONSAVEL
+  // Função para buscar as vagas
+  const fetchVagas = async (cpfRes) => {
+    try {
+      const response = await axios.get(
+        `http://zlo-hub-app.us-east-1.elasticbeanstalk.com/api/vagas/responsavel/${cpfRes}`
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Erro ao buscar vagas:", error);
+      toast.error("Erro ao buscar vagas. Tente novamente mais tarde.");
+      return [];
+    }
+  };
+
+  // Função para buscar candidaturas de uma vaga
+  const fetchCandidaturasForVaga = useCallback(async (vaga) => {
+    try {
+      const response = await axios.get(
+        `http://zlo-hub-app.us-east-1.elasticbeanstalk.com/api/candidaturas/vaga/${vaga.id}`
+      );
+      return response.data.map((candidatura) => ({
+        ...candidatura,
+        vaga,
+      }));
+    } catch (error) {
+      console.error(
+        `Erro ao buscar candidaturas para a vaga ${vaga.id}:`,
+        error
+      );
+      return [];
+    }
+  }, []);
+
+  // Função para buscar candidaturas de todas as vagas
+  const fetchAllCandidaturas = useCallback(
+    async (vagas) => {
+      const candidaturasPromises = vagas.map(fetchCandidaturasForVaga);
+      const candidaturas = (await Promise.all(candidaturasPromises)).flat();
+      return candidaturas.filter((candidatura) => candidatura.status === "ACEITO");
+    },
+    [fetchCandidaturasForVaga]
+  );
+
+  // Função para buscar dados de cuidadores
+  const fetchCuidadorForContrato = async (contrato) => {
+    try {
+      const response = await axios.get(
+        `http://zlo-hub-app.us-east-1.elasticbeanstalk.com/api/cuidadores/${contrato.cuidadorId}`
+      );
+      return { ...contrato, cuidador: response.data };
+    } catch (error) {
+      console.error(
+        `Erro ao buscar dados do cuidador com ID ${contrato.cuidadorId}:`,
+        error
+      );
+      return { ...contrato, cuidador: null };
+    }
+  };
+
+  // Função para carregar todos os contratos
+  const fetchContratos = useCallback(async () => {
+    try {
+      const vagas = await fetchVagas(responsavelData.cpfRes);
+      const candidaturasAceitas = await fetchAllCandidaturas(vagas);
+      const contratosComCuidadores = await Promise.all(
+        candidaturasAceitas.map(fetchCuidadorForContrato)
+      );
+      setContratos(contratosComCuidadores);
+    } catch (error) {
+      console.error("Erro ao carregar contratos:", error);
+      toast.error("Erro ao carregar contratos. Tente novamente mais tarde.");
+    }
+  }, [responsavelData.cpfRes, fetchAllCandidaturas]);
+
   useEffect(() => {
-    const fetchContratos = async () => {
-      try {
-        // Busca as vagas pelo CPF do RESPONSAVEL
-        const vagasResponse = await axios.get(
-          `http://zlo-hub-app.us-east-1.elasticbeanstalk.com/api/vagas/responsavel/${responsavelData.cpfRes}`
-        );
-        const vagas = vagasResponse.data;
-
-        // Busca as candidaturas de cada vaga e adiciona os detalhes da vaga a cada candidatura
-        const candidaturasPromises = vagas.map(async (vaga) => {
-          const candidaturasResponse = await axios.get(
-            `http://zlo-hub-app.us-east-1.elasticbeanstalk.com/api/candidaturas/vaga/${vaga.id}`
-          );
-          return candidaturasResponse.data.map((candidatura) => ({
-            ...candidatura,
-            vaga, // Adiciona os detalhes da vaga à candidatura
-          }));
-        });
-
-        const candidaturas = (await Promise.all(candidaturasPromises)).flat();
-
-        // Filtra as candidaturas com status ACEITO
-        const contratosAceitos = candidaturas.filter(
-          (candidatura) => candidatura.status === "ACEITO"
-        );
-
-        // Para cada candidatura aceita, busca os dados do cuidador
-        const contratosComCuidadores = await Promise.all(
-          contratosAceitos.map(async (contrato) => {
-            try {
-              const cuidadorResponse = await axios.get(
-                `http://zlo-hub-app.us-east-1.elasticbeanstalk.com/api/cuidadores/${contrato.cuidadorId}`
-              );
-              return { ...contrato, cuidador: cuidadorResponse.data };
-            } catch (error) {
-              console.error(
-                `Erro ao buscar dados do cuidador com ID ${contrato.cuidadorId}:`,
-                error
-              );
-              return { ...contrato, cuidador: null }; // Marca como nulo se falhar
-            }
-          })
-        );
-
-        setContratos(contratosComCuidadores);
-      } catch (error) {
-        console.error("Erro ao carregar contratos:", error);
-        toast.error(
-          "Erro ao carregar contratos. Tente novamente mais tarde."
-        );
-      }
-    };
-
     fetchContratos();
-  }, [responsavelData.cpfRes]);
+  }, [fetchContratos]);
 
   const toggleSidebar = () => {
     setIsMobileMenuOpen((prev) => !prev);
@@ -93,7 +113,7 @@ const ContratosResponsavel = () => {
             <CardCandidato
               key={contrato.id}
               candidatura={contrato}
-              onClick={() => setSelectedContrato(contrato)} // Define o contrato selecionado ao clicar
+              onClick={() => setSelectedContrato(contrato)}
             />
           ))}
         </CardsContainer>
@@ -101,7 +121,7 @@ const ContratosResponsavel = () => {
       {selectedContrato && (
         <ModalContratoResponsavel
           contrato={selectedContrato}
-          onClose={() => setSelectedContrato(null)} // Fecha o modal
+          onClose={() => setSelectedContrato(null)}
         />
       )}
     </Container>
