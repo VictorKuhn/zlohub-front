@@ -1,0 +1,50 @@
+name: CI/CD for ReactJS with S3 and CloudFront
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Checkout o código do repositório
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # 2. Configuração do Node.js para build
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18
+
+    # 3. Instalar dependências do projeto
+    - name: Install dependencies
+      run: npm install
+
+    # 4. Build do projeto ReactJS
+    - name: Build ReactJS project
+      run: npm run build
+
+    # 5. Deploy para o S3
+    - name: Deploy to S3
+      uses: jakejarvis/s3-sync-action@v0.6.0
+      with:
+        args: --acl public-read --delete
+      env:
+        AWS_S3_BUCKET: "zlo-hub-app" # Nome do bucket S3
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        SOURCE_DIR: "build" # Diretório gerado pelo build do React
+
+    # 6. Invalidar o cache do CloudFront
+    - name: Invalidate CloudFront cache
+      uses: chetan/invalidate-cloudfront-action@v2
+      with:
+        distribution-id: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
+        paths: "/*"
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
