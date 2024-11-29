@@ -265,18 +265,18 @@ const RegisterPage = () => {
     setRole(selectedRole);
   };
 
-  // Aplica a máscara no RG: X.XXX.XXX
+  // Aplica a máscara no RG
   const applyRgMask = (value) => {
     return value
-      .replace(/\D/g, "") // Remove todos os caracteres não numéricos
-      .replace(/^(\d{1})(\d{3})(\d{3})$/, "$1.$2.$3") // Aplica a máscara
-      .slice(0, 9); // Limita o tamanho a 9 caracteres com máscara
+      .replace(/\D/g, "")
+      .replace(/^(\d{1})(\d{3})(\d{3})$/, "$1.$2.$3") 
+      .slice(0, 9);
   };
 
-  // Valida o RG (7 dígitos, sem considerar os pontos)
+  // Valida o RG
   const validateRg = (value) => {
-    const numericValue = value.replace(/\D/g, ""); // Remove os pontos para validação
-    return numericValue.length === 7; // Deve ter exatamente 7 dígitos
+    const numericValue = value.replace(/\D/g, ""); 
+    return numericValue.length === 7;
   };
 
   const handleSubmitResponsavel = async (e) => {
