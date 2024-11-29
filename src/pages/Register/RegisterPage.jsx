@@ -27,13 +27,15 @@ const getBorderColor = (error, value) => {
   return "";
 };
 
+const getColor = (errorCondition) => {
+  return errorCondition ? "green" : "red";
+};
+
 const getInputType = (showPassword) => (showPassword ? "text" : "password");
 
 const getPasswordBorderColor = (passwordError) =>
   passwordError?.isValid ? "green" : "red";
 
-const getTextColor = (passwordError) =>
-  passwordError?.minLength ? "green" : "red";
 const RegisterPage = () => {
   const [role, setRole] = useState("CUIDADOR");
   const [formData, setFormData] = useState({
@@ -541,22 +543,22 @@ const RegisterPage = () => {
           </PasswordContainer>
           <div>
             <ErrorMessage
-              style={{ color: getTextColor(errors.senha) }}
+              style={{ color: getColor(errors.senha?.minLength) }}
             >
               Mínimo 8 caracteres
             </ErrorMessage>
             <ErrorMessage
-              style={{ color: errors.senha?.hasUppercase ? "green" : "red" }}
+              style={{ color: getColor(errors.senha?.hasUppercase) }}
             >
               Uma letra maiúscula
             </ErrorMessage>
             <ErrorMessage
-              style={{ color: errors.senha?.hasNumber ? "green" : "red" }}
+              style={{ color: getColor(errors.senha?.hasNumber) }}
             >
               Um número
             </ErrorMessage>
             <ErrorMessage
-              style={{ color: errors.senha?.hasSymbol ? "green" : "red" }}
+              style={{ color: getColor(errors.senha?.hasSymbol) }}
             >
               Um símbolo
             </ErrorMessage>
@@ -1204,22 +1206,22 @@ const RegisterPage = () => {
           </PasswordContainer>
           <div>
             <ErrorMessage
-              style={{ color: getTextColor(errors.senha) }}
+              style={{ color: getColor(errors.senha?.minLength) }}
             >
               Mínimo 8 caracteres
             </ErrorMessage>
             <ErrorMessage
-              style={{ color: errors.senha?.hasUppercase ? "green" : "red" }}
+              style={{ color: getColor(errors.senha?.hasUppercase) }}
             >
               Uma letra maiúscula
             </ErrorMessage>
             <ErrorMessage
-              style={{ color: errors.senha?.hasNumber ? "green" : "red" }}
+              style={{ color: getColor(errors.senha?.hasNumber) }}
             >
               Um número
             </ErrorMessage>
             <ErrorMessage
-              style={{ color: errors.senha?.hasSymbol ? "green" : "red" }}
+              style={{ color: getColor(errors.senha?.hasSymbol) }}
             >
               Um símbolo
             </ErrorMessage>
