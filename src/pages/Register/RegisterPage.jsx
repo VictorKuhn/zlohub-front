@@ -494,7 +494,7 @@ const RegisterPage = () => {
           selected={role === "RESPONSAVEL"}
           onClick={() => handleRoleChange("RESPONSAVEL")}
         >
-          Sou um RESPONSAVEL
+          Sou um Responsável
         </RoleOption>
       </RoleSelectionContainer>
       {role === "CUIDADOR" && (
@@ -606,11 +606,7 @@ const RegisterPage = () => {
             value={formData.cepRes || ""} // Exibe o valor formatado
             onChange={handleInputChange} // Chama o `handleInputChange` para mascarar e validar
             style={{
-              borderColor: errors.cepRes
-                ? "red"
-                : formData.cepRes
-                ? "green"
-                : "",
+              borderColor: getBorderColor(errors.cepRes, formData.cepRes)
             }}
           />
           {errors.cepRes && <ErrorMessage>{errors.cepRes}</ErrorMessage>}
@@ -697,11 +693,7 @@ const RegisterPage = () => {
             value={formData.telefoneContato1 || ""}
             onChange={handleInputChange}
             style={{
-              borderColor: errors.telefoneContato1
-                ? "red"
-                : formData.telefoneContato1 && !errors.telefoneContato1
-                ? "green"
-                : "",
+              borderColor: getBorderColor(errors.telefoneContato1, formData.telefoneContato1)
             }}
           />
           {errors.telefoneContato1 && (
@@ -716,11 +708,7 @@ const RegisterPage = () => {
             value={formData.telefoneContato2 || ""}
             onChange={handleInputChange}
             style={{
-              borderColor: errors.telefoneContato2
-                ? "red"
-                : formData.telefoneContato2 && !errors.telefoneContato2
-                ? "green"
-                : "",
+              borderColor: getBorderColor(errors.telefoneContato2, formData.telefoneContato2)
             }}
           />
           {errors.telefoneContato2 && (
@@ -762,11 +750,7 @@ const RegisterPage = () => {
             value={formData.telefoneReferencia1 || ""}
             onChange={handleInputChange}
             style={{
-              borderColor: errors.telefoneReferencia1
-                ? "red"
-                : formData.telefoneReferencia1 && !errors.telefoneReferencia1
-                ? "green"
-                : "",
+              borderColor: getBorderColor(errors.telefoneReferencia1, formData.telefoneReferencia1)
             }}
           />
           {errors.telefoneReferencia1 && (
@@ -787,11 +771,7 @@ const RegisterPage = () => {
             value={formData.telefoneReferencia2 || ""}
             onChange={handleInputChange}
             style={{
-              borderColor: errors.telefoneReferencia2
-                ? "red"
-                : formData.telefoneReferencia2 && !errors.telefoneReferencia2
-                ? "green"
-                : "",
+              borderColor: getBorderColor(errors.telefoneReferencia2, formData.telefoneReferencia2)
             }}
           />
           {errors.telefoneReferencia2 && (
@@ -812,11 +792,7 @@ const RegisterPage = () => {
             value={formData.telefoneReferencia3 || ""}
             onChange={handleInputChange}
             style={{
-              borderColor: errors.telefoneReferencia3
-                ? "red"
-                : formData.telefoneReferencia3 && !errors.telefoneReferencia3
-                ? "green"
-                : "",
+              borderColor: getBorderColor(errors.telefoneReferencia3, formData.telefoneReferencia3)
             }}
           />
           {errors.telefoneReferencia3 && (
@@ -1067,11 +1043,7 @@ const RegisterPage = () => {
               }
             }}
             style={{
-              borderColor: errors.cepRes
-                ? "red"
-                : formData.cepRes
-                ? "green"
-                : "",
+              borderColor: getBorderColor(errors.cepRes, formData.cepRes)
             }}
           />
           {errors.cepRes && (
@@ -1154,11 +1126,7 @@ const RegisterPage = () => {
             placeholder="Digite seu e-mail..."
             onChange={handleInputChange}
             style={{
-              borderColor: errors.email
-                ? "red"
-                : formData.email && !errors.email
-                ? "green"
-                : "",
+              borderColor: getBorderColor(errors.email, formData.email)
             }}
           />
           {errors.email && <ErrorMessage>{errors.email}</ErrorMessage>}
