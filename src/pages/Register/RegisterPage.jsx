@@ -19,16 +19,19 @@ import {
 } from "./RegisterPage.styles";
 import { useNavigate } from "react-router-dom";
 
-
 // Funções auxiliares para reduzir a complexidade cognitiva
-const getBorderColor = (error, value) => {
-  if (error) return "red";
-  if (value && !error) return "green";
+const getBorderColor = (errorCondition, value) => {
+  if (errorCondition) return "red";
+  if (value && !errorCondition) return "green";
   return "";
 };
 
 const getColor = (errorCondition) => {
   return errorCondition ? "green" : "red";
+};
+
+const getSimpleBorderColor = (value) => {
+  return value ? "green" : "";
 };
 
 const getInputType = (showPassword) => (showPassword ? "text" : "password");
@@ -517,11 +520,7 @@ const RegisterPage = () => {
             placeholder="Digite seu e-mail..."
             onChange={handleInputChange}
             style={{
-              borderColor: errors.email
-                ? "red"
-                : formData.email && !errors.email
-                ? "green"
-                : "",
+              borderColor: getBorderColor(errors.email, formData.email),
             }}
           />
           {errors.email && <ErrorMessage>{errors.email}</ErrorMessage>}
@@ -542,9 +541,7 @@ const RegisterPage = () => {
             </PasswordToggleIcon>
           </PasswordContainer>
           <div>
-            <ErrorMessage
-              style={{ color: getColor(errors.senha?.minLength) }}
-            >
+            <ErrorMessage style={{ color: getColor(errors.senha?.minLength) }}>
               Mínimo 8 caracteres
             </ErrorMessage>
             <ErrorMessage
@@ -552,14 +549,10 @@ const RegisterPage = () => {
             >
               Uma letra maiúscula
             </ErrorMessage>
-            <ErrorMessage
-              style={{ color: getColor(errors.senha?.hasNumber) }}
-            >
+            <ErrorMessage style={{ color: getColor(errors.senha?.hasNumber) }}>
               Um número
             </ErrorMessage>
-            <ErrorMessage
-              style={{ color: getColor(errors.senha?.hasSymbol) }}
-            >
+            <ErrorMessage style={{ color: getColor(errors.senha?.hasSymbol) }}>
               Um símbolo
             </ErrorMessage>
           </div>
@@ -572,11 +565,7 @@ const RegisterPage = () => {
               value={confirmPassword}
               onChange={handleInputChange}
               style={{
-                borderColor: errors.confirmPassword
-                  ? "red"
-                  : confirmPassword && !errors.confirmPassword
-                  ? "green"
-                  : "",
+                borderColor: getBorderColor(errors.confirmPassword, confirmPassword),
               }}
             />
             <PasswordToggleIcon onClick={() => setShowPassword(!showPassword)}>
@@ -900,9 +889,7 @@ const RegisterPage = () => {
             name="idadeRes"
             placeholder="Digite sua idade..."
             onChange={handleInputChange}
-            style={{
-              borderColor: formData.idadeRes ? "green" : "",
-            }}
+            style={{ borderColor: getSimpleBorderColor(formData.idadeRes) }}
           />
 
           <Label>Telefone de Contato 1:</Label>
@@ -1051,9 +1038,7 @@ const RegisterPage = () => {
                 setErrors((prev) => ({ ...prev, rgRes: "RG Inválido" }));
               }
             }}
-            style={{
-              borderColor: errors.rgRes ? "red" : formData.rgRes ? "green" : "",
-            }}
+            style={{ borderColor: getBorderColor(errors.rgRes, formData.rgRes) }}
           />
           {errors.rgRes && (
             <ErrorMessage
@@ -1106,9 +1091,7 @@ const RegisterPage = () => {
             onChange={(e) =>
               setFormData((prev) => ({ ...prev, logradouro: e.target.value }))
             }
-            style={{
-              borderColor: formData.logradouro ? "green" : "",
-            }}
+            style={{ borderColor: getSimpleBorderColor(formData.logradouro) }}
           />
 
           <Label>Número:</Label>
@@ -1117,9 +1100,7 @@ const RegisterPage = () => {
             name="numero"
             placeholder="Digite o número da sua residência..."
             onChange={handleInputChange}
-            style={{
-              borderColor: formData.numero ? "green" : "",
-            }}
+            style={{ borderColor: getSimpleBorderColor(formData.numero) }}
           />
 
           <Label>Complemento (Opcional):</Label>
@@ -1139,9 +1120,7 @@ const RegisterPage = () => {
             onChange={(e) =>
               setFormData((prev) => ({ ...prev, bairro: e.target.value }))
             }
-            style={{
-              borderColor: formData.bairro ? "green" : "",
-            }}
+            style={{ borderColor: getSimpleBorderColor(formData.bairro) }}
           />
 
           <Label>Cidade:</Label>
@@ -1153,9 +1132,7 @@ const RegisterPage = () => {
             onChange={(e) =>
               setFormData((prev) => ({ ...prev, cidade: e.target.value }))
             }
-            style={{
-              borderColor: formData.cidade ? "green" : "",
-            }}
+            style={{ borderColor: getSimpleBorderColor(formData.cidade) }}
           />
 
           <Label>Estado:</Label>
@@ -1167,9 +1144,7 @@ const RegisterPage = () => {
             onChange={(e) =>
               setFormData((prev) => ({ ...prev, estado: e.target.value }))
             }
-            style={{
-              borderColor: formData.estado ? "green" : "",
-            }}
+            style={{ borderColor: getSimpleBorderColor(formData.estado) }}
           />
 
           <Label>E-mail:</Label>
@@ -1205,9 +1180,7 @@ const RegisterPage = () => {
             </PasswordToggleIcon>
           </PasswordContainer>
           <div>
-            <ErrorMessage
-              style={{ color: getColor(errors.senha?.minLength) }}
-            >
+            <ErrorMessage style={{ color: getColor(errors.senha?.minLength) }}>
               Mínimo 8 caracteres
             </ErrorMessage>
             <ErrorMessage
@@ -1215,14 +1188,10 @@ const RegisterPage = () => {
             >
               Uma letra maiúscula
             </ErrorMessage>
-            <ErrorMessage
-              style={{ color: getColor(errors.senha?.hasNumber) }}
-            >
+            <ErrorMessage style={{ color: getColor(errors.senha?.hasNumber) }}>
               Um número
             </ErrorMessage>
-            <ErrorMessage
-              style={{ color: getColor(errors.senha?.hasSymbol) }}
-            >
+            <ErrorMessage style={{ color: getColor(errors.senha?.hasSymbol) }}>
               Um símbolo
             </ErrorMessage>
           </div>
@@ -1236,11 +1205,7 @@ const RegisterPage = () => {
               value={confirmPassword}
               onChange={handleInputChange}
               style={{
-                borderColor: errors.confirmPassword
-                  ? "red"
-                  : confirmPassword && !errors.confirmPassword
-                  ? "green"
-                  : "",
+                borderColor: getBorderColor(errors.confirmPassword, confirmPassword),
               }}
             />
             <PasswordToggleIcon onClick={() => setShowPassword(!showPassword)}>
