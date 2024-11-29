@@ -19,6 +19,21 @@ import {
 } from "./RegisterPage.styles";
 import { useNavigate } from "react-router-dom";
 
+
+// Funções auxiliares para reduzir a complexidade cognitiva
+const getBorderColor = (error, value) => {
+  if (error) return "red";
+  if (value && !error) return "green";
+  return "";
+};
+
+const getInputType = (showPassword) => (showPassword ? "text" : "password");
+
+const getPasswordBorderColor = (passwordError) =>
+  passwordError?.isValid ? "green" : "red";
+
+const getTextColor = (passwordError) =>
+  passwordError?.minLength ? "green" : "red";
 const RegisterPage = () => {
   const [role, setRole] = useState("CUIDADOR");
   const [formData, setFormData] = useState({
@@ -511,13 +526,13 @@ const RegisterPage = () => {
           <Label>Senha:</Label>
           <PasswordContainer>
             <Input
-              type={showPassword ? "text" : "password"}
+              type={getInputType(showPassword)}
               name="senha"
               placeholder="Digite sua senha..."
               value={password}
               onChange={handleInputChange}
               style={{
-                borderColor: errors.senha?.isValid ? "green" : "red",
+                borderColor: getPasswordBorderColor(errors.senha),
               }}
             />
             <PasswordToggleIcon onClick={() => setShowPassword(!showPassword)}>
@@ -526,7 +541,7 @@ const RegisterPage = () => {
           </PasswordContainer>
           <div>
             <ErrorMessage
-              style={{ color: errors.senha?.minLength ? "green" : "red" }}
+              style={{ color: getTextColor(errors.senha) }}
             >
               Mínimo 8 caracteres
             </ErrorMessage>
@@ -549,7 +564,7 @@ const RegisterPage = () => {
           <Label>Confirme sua Senha:</Label>
           <PasswordContainer>
             <Input
-              type={showPassword ? "text" : "password"}
+              type={getInputType(showPassword)}
               name="confirmPassword"
               placeholder="Confirme sua senha..."
               value={confirmPassword}
@@ -840,7 +855,7 @@ const RegisterPage = () => {
             placeholder="Digite seu nome completo..."
             onChange={handleInputChange}
             style={{
-              borderColor: formData.nomeRes ? "green" : "",
+              borderColor: getBorderColor(null, formData.nomeRes),
             }}
           />
 
@@ -1174,13 +1189,13 @@ const RegisterPage = () => {
           <Label>Senha:</Label>
           <PasswordContainer>
             <Input
-              type={showPassword ? "text" : "password"}
+              type={getInputType(showPassword)}
               name="senha"
               placeholder="Digite sua senha..."
               value={password}
               onChange={handleInputChange}
               style={{
-                borderColor: errors.senha?.isValid ? "green" : "red",
+                borderColor: getPasswordBorderColor(errors.senha),
               }}
             />
             <PasswordToggleIcon onClick={() => setShowPassword(!showPassword)}>
@@ -1189,7 +1204,7 @@ const RegisterPage = () => {
           </PasswordContainer>
           <div>
             <ErrorMessage
-              style={{ color: errors.senha?.minLength ? "green" : "red" }}
+              style={{ color: getTextColor(errors.senha) }}
             >
               Mínimo 8 caracteres
             </ErrorMessage>
@@ -1213,7 +1228,7 @@ const RegisterPage = () => {
           <Label>Confirme sua Senha:</Label>
           <PasswordContainer>
             <Input
-              type={showPassword ? "text" : "password"}
+              type={getInputType(showPassword)}
               name="confirmPassword"
               placeholder="Confirme sua senha..."
               value={confirmPassword}
