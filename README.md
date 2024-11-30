@@ -51,8 +51,8 @@ Antes de rodar o projeto, certifique-se de ter as seguintes ferramentas instalad
 
 Além disso, certifique-se de configurar os backends relacionados:
 
-- **Configuração do Microserviço de Login**: [Clique aqui](https://github.com/VictorKuhn/zloLogin/wiki/Configuracao-do-Ambiente)
-- **Configuração do Backend do HubZlo**: [Clique aqui](https://github.com/VictorKuhn/zloHubBackend/wiki/Configuracao-do-Ambiente)
+- **Configuração do Microserviço de Login**: [Clique aqui](https://github.com/VictorKuhn/zloLogin/wiki)
+- **Configuração do Backend do HubZlo**: [Clique aqui](https://github.com/VictorKuhn/zloHubBackend/wiki)
 
 ---
 
